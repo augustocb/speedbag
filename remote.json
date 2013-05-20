@@ -1,26 +1,22 @@
 {
 	"remote": {
-		"host": "google.com",
+		"host": "meuamigopet.vtexcommerce.com.br",
 		"port": 80
 	},
 	"proxy": {
-		"host": "localhost",
-		"port": 3000
+		"host": "meuamigopet.vtexlocal.com.br",
+		"port": 80
 	},
 	"server": {
 		"host": "localhost",
 		"port": 9001
 	},
-	"headers": {
-	},
-	"bounces":[
-		"lib/.*",
-		"js/.*",
-		"style/.*",
-		"/",
-		"index.html"
-	],
-	"mapping": false,
+	"mapping": true,
 	"mappings": {
+		"/arquivos/.*.css.*": "build/style",
+		"/arquivos(?!.*/js)/.*.js.*": "build/js",
+		"/arquivos(?!.*/ids)/.*.jpg": "build/image",
+		"/arquivos(?!.*/ids)/.*.png": "build/image",
+		"/arquivos(?!.*/ids)/.*.gif": "build/image"
 	}
 }
