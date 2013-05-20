@@ -1,0 +1,15 @@
+/**
+* Vtex Smart Menu
+* @author Carlos Vinicius
+* @version 1.0
+* @date 2011-04-11
+*/
+"function"!==typeof String.prototype.trim&&(String.prototype.trim=function(){return this.replace(/^\s+|\s+$/g,"")});
+"function"!==typeof String.prototype.replaceSpecialChars&&(String.prototype.replaceSpecialChars=function(){var d={"\u00e7":"c","\u00e6":"ae","\u0153":"oe","\u00e1":"a","\u00e9":"e","\u00ed":"i","\u00f3":"o","\u00fa":"u","\u00e0":"a","\u00e8":"e","\u00ec":"i","\u00f2":"o","\u00f9":"u","\u00e4":"a","\u00eb":"e","\u00ef":"i","\u00f6":"o","\u00fc":"u","\u00ff":"y","\u00e2":"a","\u00ea":"e","\u00ee":"i","\u00f4":"o","\u00fb":"u","\u00e5":"a","\u00e3":"a","\u00f8":"o","\u00f5":"o",u:"u","\u00c1":"A","\u00c9":"E",
+"\u00cd":"I","\u00d3":"O","\u00da":"U","\u00ca":"E","\u00d4":"O","\u00dc":"U","\u00c3":"A","\u00d5":"O","\u00c0":"A","\u00c7":"C"};return this.replace(/[\u00e0-\u00fa]/g,function(b){return"undefined"!=typeof d[b]?d[b]:b})});
+jQuery.fn.smartMenu=function(d){var b=jQuery(this);if(1>b.length)return b;var f=jQuery.extend({productsUrl:"http://"+document.location.host+"/menu",productClass:".vtexsm-product",callback:function(){}},d),g=jQuery(""),e="object"===typeof console,c={products:{},exec:function(){c.getProducts()},getProducts:function(){jQuery.ajax({url:f.productsUrl,dataType:"html",success:c.prodSuccess,error:c.prodError})},prodSuccess:function(a){a=jQuery(a).filter("div:not(.ajax-content-loader)");1>a.length?e&&console.log("[Smart Cart - Erro] N\u00e3o foram encontradas prateleiras no retorno da requisi\u00e7\u00e3o Ajax."):
+(a.each(function(){var a=jQuery(this).find(">h2");if(!(1>a.length)){var b=a.next("ul")||g,a=a.text().trim();1>a.length?e&&console.log("[Smart Cart - Erro] O  \u201ch2\u201d n\u00e3o possui texto"):1>b.length?e&&console.log("[Smart Cart - Erro] N\u00e3o foi poss\u00edvel obter a \u201cul\u201d contendo os produtos\n para o \u201ch2\u201d: \u201c"+a+"\u201d"):c.products[a.replaceSpecialChars().replace(/\s/g,"-").toLowerCase()]=b}}),c.insertInMenu())},prodError:function(){e&&console.log("[Smart Cart - Erro] N\u00e3o foi poss\u00edvel obter a p\u00e1gina com os produtos do menu")},
+insertInMenu:function(){b.each(function(){jQuery(this).find("h3").each(function(){var a=jQuery(this),b=a.text().trim(),a=a.parent().find(f.productClass);if(1>a.length)e&&console.log("[Smart Cart - Alerta] N\u00e3o foi poss\u00edvel encontrar o elemento que recebe o\nproduto dentro do menu\n("+a.selector+")");else if(1>b.length)e&&console.log("[Smart Cart - Erro] O  \u201ch3\u201d (t\u00edt. menu) n\u00e3o possui texto.");else{var d=b.replaceSpecialChars().replace(/\s/g,"-").toLowerCase();"object"!=
+typeof c.products[d]?e&&console.log("[Smart Cart - Alerta] N\u00e3o foi poss\u00edvel encontrar a vitrine\ncorrespondente ao t\u00edtulo: \u201c"+b+"\u201d"):a.append(c.products[d])}})})}};c.exec();f.callback();return b};
+
+$(function(){$(".departamentosNovo").smartMenu().addClass("smartMenuAdded");});
